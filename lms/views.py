@@ -1,40 +1,31 @@
-from django.shortcuts import render
 from .models import Course, Lesson
-from django.shortcuts import get_object_or_404
-from .serializers import CourseSerializer
-from rest_framework import viewsets
-from rest_framework.response import Response
+from .serializers import CourseSerializer, LessonSerializer
+from rest_framework import viewsets, generics
 
 
-class CourseViewSet(viewsets.ViewSet):
-    def list(self, request):
-        queryset = Course.objects.all()
-        serializer = CourseSerializer(queryset, many=True)
-        return Response(serializer.data)
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
 
-    def retrieve(self, request, pk=None):
-        queryset = Course.objects.all()
-        course = get_object_or_404(Course, pk=pk)
-        serializer = CourseSerializer(course)
-        return Response(serializer.data)
 
-    def create(self, request):
-        serializer = CourseSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return Response(serializer.errors, status=400)
+class LessonCreateAPIView(generics.CreateAPIView):
+    serializer_class = LessonSerializer
 
-    def update(self, request, pk=None):
-        course = get_object_or_404(Course, pk=pk)
-        serializer = CourseSerializer(course, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
 
-    def destroy(self, request, pk=None):
-        course = get_object_or_404(Course, pk=pk)
-        course.delete()
-        return Response(status=204)
+class LessonListAPIView(generics.ListAPIView):
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
 
+
+class LessonRetrieveAPIView(generics.RetrieveAPIView):
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+
+
+class LessonUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+
+
+class LessonDestroyAPIView(generics.DestroyAPIView):
+    queryset = Lesson.objects.all()
