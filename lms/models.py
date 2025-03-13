@@ -15,7 +15,7 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    name = models.CharField(max, verbose_name='Название урока')
+    name = models.CharField(max_length=100, verbose_name='Название урока')
     description = models.TextField(verbose_name='Описание урока')
     image = models.ImageField(verbose_name='Фото урока')
     video_http_url = models.URLField(verbose_name='Ссылка на видео')
