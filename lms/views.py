@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 
 from .models import Course, Lesson, CourseSubscription
+from .paginators import CustomPagination
 from .serializers import CourseSerializer, LessonSerializer, CourseSubscriptionSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets, generics, views
@@ -12,6 +13,7 @@ class CourseViewSet(viewsets.ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
     def perform_create(self, serializer):
         new_course = serializer.save()
@@ -42,6 +44,7 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
