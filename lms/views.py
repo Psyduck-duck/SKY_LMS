@@ -61,7 +61,7 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
     queryset = Lesson.objects.all()
-    permission_classes = [IsAuthenticated & ~IsManager & IsOwner]
+    permission_classes = [IsAuthenticated & IsOwner]
 
 
 class CourseSubscribeAPIView(views.APIView):

@@ -5,7 +5,7 @@ from lms.validators import validate_youtube_url
 
 
 class LessonSerializer(serializers.ModelSerializer):
-    video_http_url = serializers.URLField(validators=[validate_youtube_url])
+    video_http_url = serializers.URLField(validators=[validate_youtube_url], default=None)
     # owner = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -15,7 +15,7 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     lesson_count = serializers.SerializerMethodField()
-    lessons = LessonSerializer(many=True)
+    lessons = LessonSerializer(many=True, read_only=True)
     subscription = serializers.SerializerMethodField(read_only=True)
 
     def get_lesson_count(self, obj):
@@ -27,7 +27,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        fields = ['id', 'name', 'image', 'description', 'subscription', 'lesson_count', 'lessons']
+        fields = '__all__'
 
 
 class CourseSubscriptionSerializer(serializers.ModelSerializer):
