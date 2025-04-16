@@ -35,3 +35,5 @@ class Payment(models.Model):
     lesson = models.ForeignKey('lms.Lesson', on_delete=models.CASCADE, related_name='pauments', verbose_name='Урок')
     amount = models.PositiveIntegerField(verbose_name='Сумма платежа')
     payment_system = models.CharField(max_length=100, choices=PAYMENT_SYSTEM_CHOISES, verbose_name='Способ оплаты')
+    session_id = models.CharField(max_length=255, blank=True, null=True, verbose_name='ID сессии')
+    link = models.URLField(max_length=400, blank=True, null=True, verbose_name='Ссылка на оплату')

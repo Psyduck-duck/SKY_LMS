@@ -8,6 +8,7 @@ class Course(models.Model):
     image = models.ImageField(upload_to='courses_images/', blank=True, null=True, verbose_name='Фото курса')
     description = models.TextField(verbose_name='Описание')
     owner = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, related_name='courses', verbose_name='Владелец')
+    price = models.PositiveIntegerField(default=0, blank=True, null=True, verbose_name='Цена курса')
 
     def __str__(self):
         return self.name
