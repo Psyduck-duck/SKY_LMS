@@ -4,8 +4,10 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from lms.models import Course
 from users.models import User, Payment
 from users.serializers import UserSerializer, PaymentSerializer
+from users.services import create_stripe_product, create_stripe_price, create_stripe_session
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,6 +36,15 @@ class PaymentViewSet(viewsets.ModelViewSet):
     ordering_fields = ['pay_date']
     permission_classes = [IsAuthenticated]
 
-
-# class MyTokenObtainPairView(TokenObtainPairView):
-#     serializer_class = MyTokenObtainPairSerializer
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        course_id = self.request.data.get('course_id')
+        course = Course.objects.all().get(id=course_id)
+        course_title = course.title
+        course_price = course.price
+        stripe_product_id = create_stripe_product(course_title)
+        stripe_price = create_stripe_price(stripe_product_id, course_price)
+        session_id, payment_link = create_stripe_session(stripe_price)
+        payment.session_id = session_id
+        payment.link = payment_link
+        payment.save()
