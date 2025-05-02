@@ -43,6 +43,7 @@ class CourseTestCase(APITestCase):
                         'name': self.course.name,
                         'image': None,
                         'description': self.course.description,
+                        'price': 0,
                         'owner': self.user.pk
                     }
                 ]
