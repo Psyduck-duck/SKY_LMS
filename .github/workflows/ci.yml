@@ -85,8 +85,8 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/SKY_LMS:${{ github.sha }}
-          docker stop SKY_LMS || true
-          docker rm SKY_LMS || true
-          docker run -d --name SKY_LMS --env-file .env -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/SKY_LMS:${{ github.sha }}
+          docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/sky_lms:${{ github.sha }}
+          docker stop sky_lms || true
+          docker rm sky_lms || true
+          docker run -d --name sky_lms --env-file .env -p 80:8000 ${{ secrets.DOCKER_HUB_USERNAME }}/sky_lms:${{ github.sha }}
           EOF
