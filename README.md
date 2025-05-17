@@ -52,3 +52,6 @@ After starting the container, access the API documentation at:
 
 Swagger UI: http://localhost:8000/api/swagger/
 Redoc UI: http://localhost:8000/api/redoc/
+
+## server ip
+`158.160.136.146`
